@@ -73,10 +73,10 @@ prometheus-learning/
 |-------|--------|
 | Prometheus Architecture | ✅ Done |
 | Installation & Setup | ✅ Done |
-| `prometheus.yml` Configuration | 🔄 In Progress |
-| PromQL Basics | 🔄 In Progress |
-| Node Exporter | ⏳ Upcoming |
-| Alertmanager Setup | ⏳ Upcoming |
+| `prometheus.yml` Configuration | ✅ Done |
+| PromQL Mastered | ✅ Done |
+| Node Exporter | ✅ Done |
+| Alertmanager Setup | ✅ Done |
 | Grafana Integration | ⏳ Upcoming |
 | Writing Custom Exporters | ⏳ Upcoming |
 | Service Discovery | ⏳ Upcoming |

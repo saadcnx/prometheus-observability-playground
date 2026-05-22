@@ -84,7 +84,7 @@ prometheus-learning/
 
 ---
 
-## 🛠️ Mini Projects
+## 🛠️ Projects
 
 | # | Project | Description | Status |
 |---|---------|-------------|--------|

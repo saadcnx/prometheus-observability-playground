@@ -185,12 +185,6 @@ prometheus-monitoring-lab/
 ├── docs/
 │   ├── architecture.md
 │   └── troubleshooting.md
-├── screenshots/
-│   ├── prometheus-dashboard.png
-│   ├── targets-up.png
-│   ├── node-exporter-metrics.png
-│   ├── promql-query-result.png
-│   └── service-status.png
 └── LICENSE
 ```
 

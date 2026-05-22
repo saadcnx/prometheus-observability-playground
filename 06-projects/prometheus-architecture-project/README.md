@@ -79,7 +79,7 @@ A **production-grade Prometheus monitoring stack** deployed on a bare-metal Ubun
 ## 📁 Project Structure
 
 ```
-prometheus-monitoring-stack/
+prometheus-architecture-project/
 │
 ├── README.md                        # Project documentation
 │
@@ -120,10 +120,11 @@ prometheus-monitoring-stack/
 Clone the repo and run the automated installer:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/prometheus-monitoring-stack.git
-cd prometheus-monitoring-stack
-chmod +x scripts/install.sh
-sudo ./scripts/install.sh
+git clone https://github.com/saadcnx/prometheus-architecture-project.git
+cd prometheus-architecture-project
+cat ./scripts/install
+Do All the steps mention in install file
+
 ```
 
 Then verify all services are running:
@@ -140,20 +141,6 @@ Access the Prometheus UI at: **`http://<YOUR_SERVER_IP>:9090`**
 
 ### 1. Prometheus Server
 
-```bash
-# Download and install
-cd /tmp
-wget https://github.com/prometheus/prometheus/releases/download/v2.47.0/prometheus-2.47.0.linux-amd64.tar.gz
-tar xvf prometheus-2.47.0.linux-amd64.tar.gz
-
-# Create dedicated system user
-sudo useradd --no-create-home --shell /bin/false prometheus
-
-# Copy binaries
-sudo cp prometheus-2.47.0.linux-amd64/prometheus /usr/local/bin/
-sudo cp prometheus-2.47.0.linux-amd64/promtool /usr/local/bin/
-```
-
 The main config file is at `/etc/prometheus/prometheus.yml`. It defines:
 - Global scrape/evaluation intervals (15s)
 - Alertmanager endpoint (`localhost:9093`)
@@ -163,47 +150,21 @@ The main config file is at `/etc/prometheus/prometheus.yml`. It defines:
 
 Collects system-level metrics: CPU utilization, memory usage, disk I/O, filesystem space, and network throughput.
 
-```bash
-wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
-tar xvf node_exporter-1.6.1.linux-amd64.tar.gz
-sudo cp node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin/
-```
-
 Verify metrics are being exposed:
 ```bash
 curl http://localhost:9100/metrics | head -20
+
 ```
 
 ### 3. Process Exporter
 
 Monitors individual Linux processes — useful for tracking resource usage of specific services like `prometheus`, `node_exporter`, `sshd`, etc.
 
-Config at `/etc/process-exporter/config.yml`:
-```yaml
-process_names:
-  - name: "{{.Comm}}"
-    cmdline:
-      - '.+'
 ```
 
 ### 4. Alertmanager
 
 Handles alert lifecycle: deduplication, grouping, silencing, and routing to receivers (email, Slack, webhook, PagerDuty, etc.).
-
-Config at `/etc/alertmanager/alertmanager.yml`:
-```yaml
-route:
-  group_by: ['alertname']
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 1h
-  receiver: 'web.hook'
-
-receivers:
-  - name: 'web.hook'
-    webhook_configs:
-      - url: 'http://127.0.0.1:5001/'
-```
 
 ---
 
@@ -211,32 +172,7 @@ receivers:
 
 Defined in `configs/alert_rules.yml`. Three rules are active:
 
-### InstanceDown
-```yaml
-alert: InstanceDown
-expr: up == 0
-for: 1m
-severity: critical
-```
 Fires when any scrape target has been unreachable for more than **1 minute**.
-
-### HighCPUUsage
-```yaml
-alert: HighCPUUsage
-expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
-for: 2m
-severity: warning
-```
-Fires when CPU usage exceeds **80%** for more than **2 minutes**. Uses `irate()` for per-second rate calculation over a 5-minute window.
-
-### HighMemoryUsage
-```yaml
-alert: HighMemoryUsage
-expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
-for: 2m
-severity: warning
-```
-Fires when memory consumption exceeds **85%** for more than **2 minutes**.
 
 **Test alerts manually:**
 ```bash
@@ -248,7 +184,7 @@ chmod +x scripts/cpu_stress.sh
 # http://<YOUR_IP>:9090/alerts
 
 # Stop the stress test
-killall yes
+sudo killall yes
 ```
 
 ---
@@ -341,20 +277,8 @@ sudo journalctl -u node_exporter -f
 - **Alertmanager separation of concerns:** Decoupling alert routing from alerting rules means you can change notification channels without touching Prometheus config.
 - **systemd integration:** Running each component as a dedicated unprivileged system user following the principle of least privilege is a production best practice.
 
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## 🙋‍♂️ Author
-
-**Your Name**  
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat&logo=linkedin)](https://linkedin.com/in/YOUR_PROFILE)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat&logo=github)](https://github.com/YOUR_USERNAME)
-
----
 
 *If this project helped you, consider giving it a ⭐ on GitHub!*

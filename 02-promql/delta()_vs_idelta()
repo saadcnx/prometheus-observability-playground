@@ -1,0 +1,52 @@
+# delta() vs idelta() for Gauges
+
+### Critical Rule: NEVER use `rate()` on Gauges!
+People often make this mistake. For Gauges, always use `delta()` or `idelta()`. Here's why.
+
+---
+
+## What is delta()?
+
+`delta()` does a very simple calculation:  
+It subtracts the **oldest value** from the **latest value** in your time window.
+
+Delta = Last Value - First Value
+
+- **Needs Range Vector:** Just like `rate()`, you must give it a time window like `[5m]` or `[1h]`.
+- **Result:** Gives you the absolute change (how much the value went up or down).
+
+### Example 📉
+
+Your CPU usage is being checked:
+
+- **5 minutes ago (start of window):** CPU = 85%
+- **Right now (end of window):** CPU = 64%
+
+When you run `delta(process_cpu_usage[5m])`, the math is:
+
+64% - 85% = -21%
+
+This **-21%** clearly tells you: CPU usage **decreased by 21%** in the last 5 minutes.  
+If the result was **+15**, it would mean CPU load **increased**.
+
+---
+
+## ⚠️ Why NOT use rate() on Gauges?
+
+This is a very popular interview question. Simple answer:
+
+- **`rate()` is designed only for increase:** It assumes the metric is a Counter that only goes up. If the counter goes down, `rate()` thinks the app restarted (Counter Reset) and adjusts calculations from zero.
+- **Gauges go up AND down naturally:** CPU, Memory, Temperature fluctuate every second. If you apply `rate()` on a Gauge, every time the value drops, Prometheus gets confused — thinks the app crashed/restarted — and your graph becomes completely wrong.
+
+### Simple Rule:
+- Want speed of a **Counter**? → `rate()`
+- Want change of a **Gauge**? → `delta()`
+
+## Bonus: delta() vs idelta()
+
+Just like `rate()` has a brother `irate()`, `delta()` has a brother `idelta()`:
+
+| Function | What It Does |
+|----------|--------------|
+| **delta(metric[5m])** | Difference between first & last point of the whole 5-minute window (Overall change) |
+| **idelta(metric[5m])** | Difference between only the **last 2 data points** (Instantaneous change) |

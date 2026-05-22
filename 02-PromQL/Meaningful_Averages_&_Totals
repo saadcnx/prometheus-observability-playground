@@ -1,0 +1,38 @@
+1. Average Request Duration (Average Latency)
+When your manager asks for the overall average response time of your application, use this query:
+
+promql
+rate(request_duration_sum[2m]) / rate(http_requests_total[2m])
+
+How it works:
+rate(_sum[2m]) → Total time spent (in seconds) per second
+rate(_total[2m]) → Number of requests per second
+Dividing them gives average seconds per request
+
+Example:
+If 100 requests took 50 seconds total → Average = 0.5 seconds (500ms)
+Note: Use _sum and _count / _total from Histogram or Summary metrics.
+
+2. increase() Function
+increase() calculates the total absolute increase over a time window.
+
+Example:
+promqlincrease(http_requests_total{path="/"}[3m])
+Meaning: Total number of requests to / path in the last 3 minutes.
+
+Key Difference:
+FunctionOutputBest Forrate()Per second (e.g. 2.5 req/s)Graphs & trendsincrease()Total count (e.g. 750)Summary stats, billing, totals
+
+Important Warning: Extrapolation
+
+increase() and rate() may extrapolate values if the time window doesn't perfectly align with scrape intervals.
+This can result in fractional values (e.g., 500.7 requests).
+Solution: Use larger time windows ([10m], [30m], [1h]) for more accurate results.
+
+Summary:
+
+Use rate() for speed/velocity (good for graphs)
+Use increase() for total counts
+Combine _sum and _count for average latency
+
+These two concepts (Average Latency + increase()) are heavily used in real-world monitoring.

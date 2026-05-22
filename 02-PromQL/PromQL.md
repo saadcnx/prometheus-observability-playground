@@ -238,29 +238,25 @@ bottomk(5, rate(http_requests_total[5m]))
 Returns bottom K time series with lowest values
 
 Quick Reference Table
-Function	Input	Output	Use With
-rate()	Range Vector	Instant Vector	Counters
-irate()	Range Vector	Instant Vector	Counters
-delta()	Range Vector	Instant Vector	Gauges
-increase()	Range Vector	Instant Vector	Counters
-deriv()	Range Vector	Instant Vector	Gauges
-sum/avg/max/min	Instant Vector	Scalar	Any
-sum by()	Instant Vector	Vector	Any
-*_over_time()	Range Vector	Instant Vector	Any
+Function	            Input	        Output	Use With
+rate()	                Range Vector	Instant Vector	Counters
+irate()	                Range Vector	Instant Vector	Counters
+delta()	                Range Vector	Instant Vector	Gauges
+increase()	            Range Vector	Instant Vector	Counters
+deriv()	                Range Vector	Instant Vector	Gauges
+sum/avg/max/min	        Instant Vector	Scalar	Any
+sum by()                Instant Vector	Vector	Any
+*_over_time()	        Range Vector	Instant Vector	Any
 histogram_quantile()	Vector	Scalar	Histograms
-topk()/bottomk()	Instant Vector	Vector	Any
+topk()/bottomk()	    Instant Vector	Vector	Any
+
 Key Rules to Remember
 Rate/IRate → Counters only
-
 Delta/Deriv → Gauges only
-
 Instant Vector = single value per time series
-
 Range Vector = range of values per time series
 
 Labels are case-sensitive
-
 Histogram buckets are cumulative
-
 Increase function may extrapolate for small windows
 

@@ -96,7 +96,6 @@ prometheus-architecture-project/
 │   └── process_exporter.service
 │
 ├── scripts/
-│   ├── install.sh                   # Full one-shot installation script
 │   └── cpu_stress.sh                # CPU stress test to trigger alerts
 │
 └── docs/
@@ -122,8 +121,6 @@ Clone the repo and run the automated installer:
 ```bash
 git clone https://github.com/saadcnx/prometheus-architecture-project.git
 cd prometheus-architecture-project
-cat ./scripts/install
-Do All the steps mention in install file
 
 ```
 
@@ -263,9 +260,8 @@ sudo journalctl -u node_exporter -f
 | View | Description |
 |---|---|
 | `docs/screenshots/targets.png` | All scrape targets healthy (green) |
-| `docs/screenshots/graph-cpu.png` | CPU usage PromQL graph |
-| `docs/screenshots/alerts.png` | HighCPUUsage alert firing during stress test |
-| `docs/screenshots/alertmanager.png` | Alertmanager UI showing active alerts |
+| `docs/screenshots/alert_test_result.png` | Alerts test Result |
+| `docs/screenshots/alert_test_start.png` | HighCPUUsage alert firing during stress test |
 
 ---
 

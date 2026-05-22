@@ -1,4 +1,4 @@
-(im using this fastapi rslim087/fastapi-prometheus:latest in which we can easily get the most common metrics counter gauge histogram)
+# im using this fastapi rslim087/fastapi-prometheus:latest in which we can easily get the most common metrics counter gauge histogram
 
 Chapter 1: Getting Started
 
@@ -94,14 +94,12 @@ Rate: Averages over full window (smoother)
 IRate: Shows sudden spikes (more sensitive to anomalies)
 
 Chapter 6: Delta Function (for Gauges)
-promql
-delta(process_cpu_usage[5m])
+
+promql in prometheus dashboard search paste this -----> delta(process_cpu_usage[5m])
+
 Expects Range Vector
-
 Calculates difference between first and last value
-
 Use with gauges and histograms ONLY
-
 Example: CPU decreased by 21% over 5 minutes
 
 ⚠️ Don't use rate() with gauges - use delta() instead

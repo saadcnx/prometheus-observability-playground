@@ -56,9 +56,9 @@ prometheus-learning/
 │   └── dashboards/               # JSON dashboard exports
 │
 ├── 📂 06-projects/
-│   ├── monitor-flask-app/        # Monitor a Python Flask app
-│   ├── docker-monitoring/        # Monitor Docker containers
-│   └── linux-system-monitor/     # Full system monitoring stack
+│   ├── prometheus-monitoring-setup        # setup prometheus
+│  
+│   
 │
 └── 📂 resources/
     ├── cheatsheet.md             # Quick reference

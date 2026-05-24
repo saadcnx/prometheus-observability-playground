@@ -93,7 +93,7 @@ Difference: Rate vs IRate
 Rate: Averages over full window (smoother)
 IRate: Shows sudden spikes (more sensitive to anomalies)
 
-Chapter 6: Delta Function (for Gauges)
+# Chapter 6: Delta Function (for Gauges)
 
 promql in prometheus dashboard search paste this -----> delta(process_cpu_usage[5m])
 
